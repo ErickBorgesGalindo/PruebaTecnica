@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-# 1. Instalar dependencias del sistema PRIMERO
+# 1. Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 2. Instalar extensión MongoDB DESPUÉS de las dependencias del sistema
+# 2. Instalar extensión MongoDB
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/install-php-extensions
 RUN install-php-extensions mongodb
 
@@ -29,12 +29,15 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --prefer-dist --ignore-platform-req=ext-mongodb
 
+# Cache bust for source code changes
+ARG CACHE_BUST=1
 COPY . .
 RUN composer dump-autoload --optimize --no-dev
 
 EXPOSE 8000
 
-CMD printf "APP_KEY=\nAPP_DEBUG=true\nAPP_ENV=production\nDB_CONNECTION=mongodb\nCACHE_STORE=array\nSESSION_DRIVER=array\nQUEUE_CONNECTION=sync\nLOG_LEVEL=debug\nLOG_CHANNEL=stack\n" > .env \
+CMD printf "APP_ENV=production\nDB_CONNECTION=mongodb\nCACHE_STORE=array\nSESSION_DRIVER=array\nQUEUE_CONNECTION=sync\n" > .env \
     && php artisan key:generate --force \
     && php artisan config:clear \
+    && php artisan route:clear \
     && php artisan serve --host=0.0.0.0 --port=$PORT

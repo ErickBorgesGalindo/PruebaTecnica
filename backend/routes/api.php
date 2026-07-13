@@ -15,8 +15,8 @@ Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::get('/health', function () {
     $result = [];
     $result['mongodb_ext'] = extension_loaded('mongodb');
-    $result['uri_set'] = !empty(config('database.connections.mongodb.uri'));
-    $result['uri_preview'] = substr(config('database.connections.mongodb.uri') ?? 'null', 0, 40);
+    $result['dsn_set'] = !empty(config('database.connections.mongodb.dsn'));
+    $result['dsn_preview'] = substr(config('database.connections.mongodb.dsn') ?? 'null', 0, 40);
     try {
         \DB::connection('mongodb')->getMongoDB();
         $result['connection'] = 'ok';
