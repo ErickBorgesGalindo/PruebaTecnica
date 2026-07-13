@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-# Instalar extensiones de PHP necesarias
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -10,10 +10,13 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
+    libssl-dev \
     zip \
     unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instalar Composer
@@ -25,8 +28,8 @@ WORKDIR /var/www/html
 # Copiar archivos de composer
 COPY composer.json composer.lock ./
 
-# Instalar dependencias
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+# Instalar dependencias ignorando ext-mongodb temporalmente
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-req=ext-mongodb
 
 # Copiar todo el proyecto
 COPY . .
