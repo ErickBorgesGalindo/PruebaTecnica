@@ -1,5 +1,3 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
 # Compiled output
 /dist
 /tmp
@@ -40,3 +38,28 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Laravel
+backend/.env
+backend/.env.backup
+backend/.env.production
+backend/vendor/
+backend/node_modules/
+backend/storage/*.key
+backend/public/hot
+backend/public/storage
+backend/storage/pail
+backend/.phpactor.json
+backend/.phpunit.result.cache
+backend/.fleet
+backend/.idea
+backend/.nova
+backend/.phpunit.cache
+backend/.vscode
+backend/.zed
+backend/auth.json
+backend/Homestead.json
+backend/Homestead.yaml
+
+# PHP
+*.log

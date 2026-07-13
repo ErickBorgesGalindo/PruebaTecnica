@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: backend
+    runtime: php
+    rootDir: backend
+    buildCommand: composer install --no-dev
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_TTL
+        value: "60"
+      - key: DB_CONNECTION
+        value: mongodb
+      - key: MONGODB_HOST
+        sync: false
+      - key: MONGODB_PORT
+        value: "27017"
+      - key: MONGODB_DATABASE
+        value: prueba_tecnica
+      - key: MONGODB_USERNAME
+        sync: false
+      - key: MONGODB_PASSWORD
+        sync: false
+
+  - type: web
+    name: frontend
+    runtime: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: node dist/frontend/server/server.mjs
+    envVars:
+      - key: NODE_ENV
+        value: production
