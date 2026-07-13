@@ -22,28 +22,16 @@ RUN apt-get update && apt-get install -y \
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Working directory
 WORKDIR /var/www/html
 
-# Copiar archivos de composer
 COPY composer.json composer.lock ./
 
-# Instalar dependencias ignorando ext-mongodb temporalmente
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-req=ext-mongodb
+RUN composer install --no-dev --prefer-dist --ignore-platform-req=ext-mongodb
 
-# Copiar todo el proyecto
 COPY . .
 
-# Generar autoloader
 RUN composer dump-autoload --optimize --no-dev
-
-# Generar key
-RUN php artisan key:generate --force
-
-# Cache de config
-RUN php artisan config:cache
-RUN php artisan route:cache
 
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD cp .env.example .env && php artisan key:generate --force && php artisan serve --host=0.0.0.0 --port=$PORT
