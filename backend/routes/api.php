@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
 
+Route::get('/health', function () {
+    try {
+        \MongoDB\Laravel\Connection::getDefaultConnection();
+        $db = \DB::connection('mongodb')->getMongoDB();
+        $db->selectCollection('users')->countDocuments();
+        return response()->json(['status' => 'ok', 'mongodb' => 'connected']);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+    }
+});
+
 Route::middleware('auth:api')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/me', [AuthController::class, 'me']);
