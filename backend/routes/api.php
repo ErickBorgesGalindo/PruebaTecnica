@@ -55,3 +55,8 @@ Route::get('/seed', function () {
     \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\UserProfileSeeder']);
     return response()->json(['status' => 'Database seeded']);
 });
+
+Route::get('/debug/users', function () {
+    $users = \App\Models\User::all()->map(fn($u) => ['id' => $u->id, 'email' => $u->email]);
+    return response()->json(['count' => $users->count(), 'users' => $users]);
+});
