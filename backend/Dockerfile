@@ -34,7 +34,7 @@ RUN composer dump-autoload --optimize --no-dev
 
 EXPOSE 8000
 
-CMD echo "APP_KEY=\nAPP_DEBUG=true\nAPP_ENV=production\nDB_CONNECTION=mongodb\nCACHE_STORE=array\nSESSION_DRIVER=array\nQUEUE_CONNECTION=sync" > .env \
+CMD printf "APP_KEY=\nAPP_DEBUG=true\nAPP_ENV=production\nDB_CONNECTION=mongodb\nCACHE_STORE=array\nSESSION_DRIVER=array\nQUEUE_CONNECTION=sync\nLOG_LEVEL=debug\nLOG_CHANNEL=stack\n" > .env \
     && php artisan key:generate --force \
     && php artisan config:clear \
     && php artisan serve --host=0.0.0.0 --port=$PORT

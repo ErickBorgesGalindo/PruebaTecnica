@@ -116,7 +116,7 @@ return [
 
         'mongodb' => [
             'driver'   => 'mongodb',
-            'uri'      => env('MONGODB_URI'),
+            'dsn'      => env('MONGODB_URI'),
             'database' => env('MONGODB_DATABASE', 'tap_terminal'),
         ],
 
