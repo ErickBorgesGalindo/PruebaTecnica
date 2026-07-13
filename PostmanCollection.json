@@ -1,0 +1,620 @@
+{
+  "info": {
+    "name": "TAP Terminal - API",
+    "description": "API REST del sistema de gestión de TAP Terminal.\n\n## Instrucciones de uso\n1. Ejecuta `POST /auth/login` con las credenciales para obtener el token.\n2. Copia el token y guárdalo en la variable de entorno `token`.\n3. Todas las demás peticiones autorizadas usarán este token automáticamente.\n\n## Credenciales de prueba\n- **Admin:** admin@test.com / password123 (acceso total)\n- **Solo lectura:** maria@test.com / password123 (solo productos)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Inicia sesión y retorna el token JWT, el usuario y sus perfiles/secciones."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Cierra la sesión e invalida el token actual."
+          }
+        },
+        {
+          "name": "Obtener usuario actual",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            },
+            "description": "Retorna el usuario autenticado con sus perfiles y secciones."
+          }
+        },
+        {
+          "name": "Recuperar contraseña",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-password"]
+            },
+            "description": "Genera una contraseña temporal y la retorna. En producción se enviaría por email."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "Listar productos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            },
+            "description": "Retorna todos los productos."
+          }
+        },
+        {
+          "name": "Crear producto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Laptop Dell\",\n  \"brand\": \"Dell\",\n  \"price\": 18999\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            },
+            "description": "Crea un nuevo producto. El código se genera automáticamente. Campos requeridos: name, brand, price (máx 999)."
+          }
+        },
+        {
+          "name": "Obtener producto",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Retorna un producto por su ID."
+          }
+        },
+        {
+          "name": "Actualizar producto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Laptop Dell XPS\",\n  \"brand\": \"Dell\",\n  \"price\": 21999\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Actualiza un producto existente. Solo envía los campos que quieras cambiar."
+          }
+        },
+        {
+          "name": "Eliminar producto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Elimina un producto por su ID."
+          }
+        },
+        {
+          "name": "Exportar productos PDF",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/products/pdf",
+              "host": ["{{baseUrl}}"],
+              "path": ["export", "products", "pdf"]
+            },
+            "description": "Descarga el listado de productos en formato PDF."
+          }
+        },
+        {
+          "name": "Exportar productos Excel",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/products/excel",
+              "host": ["{{baseUrl}}"],
+              "path": ["export", "products", "excel"]
+            },
+            "description": "Descarga el listado de productos en formato Excel (.xlsx)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            },
+            "description": "Retorna todos los usuarios."
+          }
+        },
+        {
+          "name": "Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Carlos García\",\n  \"email\": \"carlos@test.com\",\n  \"phone\": \"+521234567890\",\n  \"photo_url\": \"https://images.pexels.com/photos/1854864/pexels-photo-1854864.jpeg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            },
+            "description": "Crea un usuario nuevo. El código y contraseña temporal se generan automáticamente. email debe ser único."
+          }
+        },
+        {
+          "name": "Obtener usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Retorna un usuario por su ID."
+          }
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Carlos García López\",\n  \"email\": \"carlos@test.com\",\n  \"phone\": \"+520987654321\",\n  \"photo_url\": \"https://images.pexels.com/photos/1854864/pexels-photo-1854864.jpeg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Actualiza un usuario existente. Solo envía los campos que quieras cambiar."
+          }
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Elimina un usuario por su ID."
+          }
+        },
+        {
+          "name": "Perfiles de un usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{id}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{id}", "profiles"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Retorna los perfiles asignados a un usuario específico."
+          }
+        },
+        {
+          "name": "Exportar usuarios PDF",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/users/pdf",
+              "host": ["{{baseUrl}}"],
+              "path": ["export", "users", "pdf"]
+            },
+            "description": "Descarga el listado de usuarios en formato PDF."
+          }
+        },
+        {
+          "name": "Exportar usuarios Excel",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/users/excel",
+              "host": ["{{baseUrl}}"],
+              "path": ["export", "users", "excel"]
+            },
+            "description": "Descarga el listado de usuarios en formato Excel (.xlsx)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Perfiles",
+      "item": [
+        {
+          "name": "Listar perfiles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"]
+            },
+            "description": "Retorna todos los perfiles."
+          }
+        },
+        {
+          "name": "Crear perfil",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Editor\",\n  \"sections\": [\"products\", \"users\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"]
+            },
+            "description": "Crea un perfil nuevo. Secciones disponibles: products, users, profiles, audit-logs."
+          }
+        },
+        {
+          "name": "Obtener perfil",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Retorna un perfil por su ID."
+          }
+        },
+        {
+          "name": "Actualizar perfil",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Editor Avanzado\",\n  \"sections\": [\"products\", \"users\", \"profiles\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Actualiza un perfil existente."
+          }
+        },
+        {
+          "name": "Eliminar perfil",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Elimina un perfil por su ID."
+          }
+        },
+        {
+          "name": "Exportar perfiles PDF",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/profiles/pdf",
+              "host": ["{{baseUrl}}"],
+              "path": ["export", "profiles", "pdf"]
+            },
+            "description": "Descarga el listado de perfiles en formato PDF."
+          }
+        },
+        {
+          "name": "Exportar perfiles Excel",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/profiles/excel",
+              "host": ["{{baseUrl}}"],
+              "path": ["export", "profiles", "excel"]
+            },
+            "description": "Descarga el listado de perfiles en formato Excel (.xlsx)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Relación Usuario-Perfil",
+      "item": [
+        {
+          "name": "Listar relaciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-profiles"]
+            },
+            "description": "Retorna todas las asignaciones usuario-perfil."
+          }
+        },
+        {
+          "name": "Asignar perfil a usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"\",\n  \"profile_id\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-profiles"]
+            },
+            "description": "Asigna un perfil a un usuario. Requiere user_id y profile_id."
+          }
+        },
+        {
+          "name": "Desasignar perfil",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles/{id}",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-profiles", "{id}"],
+              "variable": [{ "key": "id", "value": "" }]
+            },
+            "description": "Elimina una asignación usuario-perfil por su ID de relación."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bitácora",
+      "item": [
+        {
+          "name": "Listar registros de bitácora",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/audit-logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["audit-logs"]
+            },
+            "description": "Retorna el historial de cambios paginado. Parámetros opcionales: entity_type (product/user/profile), action (created/updated/deleted)."
+          }
+        },
+        {
+          "name": "Filtrar por entidad",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/audit-logs?entity_type=product",
+              "host": ["{{baseUrl}}"],
+              "path": ["audit-logs"],
+              "query": [
+                { "key": "entity_type", "value": "product", "description": "product, user o profile" }
+              ]
+            },
+            "description": "Filtra la bitácora por tipo de entidad."
+          }
+        },
+        {
+          "name": "Filtrar por acción",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/audit-logs?action=updated",
+              "host": ["{{baseUrl}}"],
+              "path": ["audit-logs"],
+              "query": [
+                { "key": "action", "value": "updated", "description": "created, updated o deleted" }
+              ]
+            },
+            "description": "Filtra la bitácora por tipo de acción."
+          }
+        }
+      ]
+    }
+  ]
+}
