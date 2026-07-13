@@ -1,5 +1,8 @@
 FROM php:8.2-cli
 
+# Cache bust: 2026-07-13-rebuild
+RUN echo "rebuild"
+
 # Instalar extensión MongoDB de forma confiable
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/install-php-extensions
 
