@@ -34,7 +34,7 @@ RUN composer dump-autoload --optimize --no-dev
 
 EXPOSE 8000
 
-CMD cp .env.example .env \
+CMD echo "APP_KEY=\nAPP_DEBUG=true\nAPP_ENV=production\nDB_CONNECTION=mongodb\nCACHE_STORE=array\nSESSION_DRIVER=array\nQUEUE_CONNECTION=sync" > .env \
     && php artisan key:generate --force \
     && php artisan config:clear \
     && php artisan serve --host=0.0.0.0 --port=$PORT
