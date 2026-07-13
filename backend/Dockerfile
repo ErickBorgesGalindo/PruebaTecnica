@@ -34,4 +34,4 @@ RUN composer dump-autoload --optimize --no-dev
 
 EXPOSE 8000
 
-CMD cp .env.example .env && php artisan key:generate --force && php artisan serve --host=0.0.0.0 --port=$PORT
+CMD cp .env.example .env && php artisan key:generate --force && php artisan config:clear && php artisan serve --host=0.0.0.0 --port=$PORT

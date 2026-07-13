@@ -13,14 +13,18 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
 
 Route::get('/health', function () {
+    $result = [];
+    $result['mongodb_ext'] = extension_loaded('mongodb');
+    $result['uri_set'] = !empty(config('database.connections.mongodb.uri'));
+    $result['uri_preview'] = substr(config('database.connections.mongodb.uri') ?? 'null', 0, 40);
     try {
-        \MongoDB\Laravel\Connection::getDefaultConnection();
-        $db = \DB::connection('mongodb')->getMongoDB();
-        $db->selectCollection('users')->countDocuments();
-        return response()->json(['status' => 'ok', 'mongodb' => 'connected']);
+        \DB::connection('mongodb')->getMongoDB();
+        $result['connection'] = 'ok';
     } catch (\Exception $e) {
-        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        $result['connection'] = 'failed';
+        $result['error'] = $e->getMessage();
     }
+    return response()->json($result);
 });
 
 Route::middleware('auth:api')->group(function () {
