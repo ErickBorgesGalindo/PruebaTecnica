@@ -49,11 +49,27 @@ Route::get('/export/profiles/pdf', [ExportController::class, 'profilesPdf']);
 Route::get('/export/profiles/excel', [ExportController::class, 'profilesExcel']);
 
 Route::get('/seed', function () {
-    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\UserSeeder']);
-    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProfileSeeder']);
-    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProductSeeder']);
-    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\UserProfileSeeder']);
-    return response()->json(['status' => 'Database seeded']);
+    $results = [];
+    try {
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\UserSeeder', '--force' => true]);
+        $results['users'] = \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception $e) {
+        $results['users_error'] = $e->getMessage();
+    }
+    try {
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProfileSeeder', '--force' => true]);
+        $results['profiles'] = \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception $e) {
+        $results['profiles_error'] = $e->getMessage();
+    }
+    try {
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\UserProfileSeeder', '--force' => true]);
+        $results['user_profiles'] = \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception $e) {
+        $results['user_profiles_error'] = $e->getMessage();
+    }
+    $results['count'] = \App\Models\User::count();
+    return response()->json($results);
 });
 
 Route::get('/debug/users', function () {
