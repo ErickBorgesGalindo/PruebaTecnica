@@ -68,7 +68,14 @@ Route::get('/seed', function () {
     } catch (\Exception $e) {
         $results['user_profiles_error'] = $e->getMessage();
     }
+    try {
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProductSeeder', '--force' => true]);
+        $results['products'] = \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception $e) {
+        $results['products_error'] = $e->getMessage();
+    }
     $results['count'] = \App\Models\User::count();
+    $results['products_count'] = \App\Models\Product::count();
     return response()->json($results);
 });
 
