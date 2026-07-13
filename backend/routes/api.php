@@ -47,3 +47,11 @@ Route::get('/export/users/pdf', [ExportController::class, 'usersPdf']);
 Route::get('/export/users/excel', [ExportController::class, 'usersExcel']);
 Route::get('/export/profiles/pdf', [ExportController::class, 'profilesPdf']);
 Route::get('/export/profiles/excel', [ExportController::class, 'profilesExcel']);
+
+Route::get('/seed', function () {
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\UserSeeder']);
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProfileSeeder']);
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProductSeeder']);
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\UserProfileSeeder']);
+    return response()->json(['status' => 'Database seeded']);
+});
