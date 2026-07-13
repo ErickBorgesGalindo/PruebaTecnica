@@ -1,0 +1,37 @@
+<h1>Listado de Productos</h1>
+
+<app-product-form
+  [productToEdit]="productToEdit"
+  (productCreated)="onFormClose()"
+></app-product-form>
+
+<div class="export-buttons">
+  <a href="http://127.0.0.1:8000/api/export/products/pdf" target="_blank">Descargar PDF</a>
+  <a href="http://127.0.0.1:8000/api/export/products/excel" target="_blank">Descargar Excel</a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Nombre</th>
+      <th>Marca</th>
+      <th>Precio</th>
+      <th>Fecha de Creación</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.code }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.brand }}</td>
+      <td>{{ product.price | number }}</td>
+      <td>{{ product.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+      <td>
+        <button (click)="editProduct(product)">Editar</button>
+        <button (click)="deleteProduct(product.id)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

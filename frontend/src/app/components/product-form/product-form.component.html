@@ -1,0 +1,21 @@
+<div class="form-container">
+  <h2>Nuevo Producto</h2>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label>Nombre:</label>
+      <input type="text" [(ngModel)]="name" name="name" required>
+    </div>
+    <div>
+      <label>Marca:</label>
+      <input type="text" [(ngModel)]="brand" name="brand" required>
+    </div>
+    <div>
+      <label>Precio:</label>
+      <input type="number" [(ngModel)]="price" name="price" required max="999">
+    </div>
+    <button type="submit">Guardar</button>
+  </form>
+</div>

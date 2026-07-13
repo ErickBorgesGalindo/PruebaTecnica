@@ -1,0 +1,26 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Detalle del Usuario</h3>
+
+    <div class="user-photo" *ngIf="user.photo_url">
+      <img [src]="user.photo_url" alt="Foto de perfil">
+    </div>
+
+    <p><strong>Código:</strong> {{ user.code }}</p>
+    <p><strong>Nombre:</strong> {{ user.name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Teléfono:</strong> {{ user.phone || 'No registrado' }}</p>
+    <p><strong>Fecha de creación:</strong> {{ user.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+
+    <p><strong>Perfiles asignados:</strong></p>
+    <ul *ngIf="profiles.length > 0">
+      <li *ngFor="let profile of profiles">
+        {{ profile.name }} ({{ profile.code }})
+      </li>
+    </ul>
+    <p *ngIf="profiles.length === 0 && !loading">Sin perfiles asignados</p>
+    <p *ngIf="loading">Cargando perfiles...</p>
+
+    <button (click)="onClose()">Cerrar</button>
+  </div>
+</div><p>user-detail works!</p>

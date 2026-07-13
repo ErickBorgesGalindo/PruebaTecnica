@@ -1,0 +1,26 @@
+<div class="form-container">
+  <h2>{{ isEditing ? 'Editar Usuario' : 'Nuevo Usuario' }}</h2>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label>Nombre:</label>
+      <input type="text" [(ngModel)]="name" name="name" required>
+    </div>
+    <div>
+      <label>Email:</label>
+      <input type="email" [(ngModel)]="email" name="email" required>
+    </div>
+    <div>
+      <label>Teléfono:</label>
+      <input type="text" [(ngModel)]="phone" name="phone" placeholder="+52...">
+    </div>
+    <div>
+      <label>Foto (URL):</label>
+      <input type="text" [(ngModel)]="photo_url" name="photo_url" required>
+    </div>
+    <button type="submit">{{ isEditing ? 'Actualizar' : 'Guardar' }}</button>
+    <button type="button" *ngIf="isEditing" (click)="resetForm(); userCreated.emit();">Cancelar</button>
+  </form>
+</div>

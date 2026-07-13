@@ -1,0 +1,8 @@
+<nav>
+  <a *ngIf="hasSection('products')" routerLink="/products">Productos</a>
+  <a *ngIf="hasSection('users')" routerLink="/users">Usuarios</a>
+  <a *ngIf="hasSection('profiles')" routerLink="/profiles">Perfiles</a>
+  <a *ngIf="hasSection('audit-logs')" routerLink="/audit-logs">Bitácora</a>
+  <button (click)="logout()">Cerrar Sesión</button>
+</nav>
+<router-outlet></router-outlet>

@@ -1,0 +1,49 @@
+<h2>Perfiles</h2>
+
+<app-profile-form
+  [profileToEdit]="profileToEdit"
+  (profileCreated)="onFormClose()"
+></app-profile-form>
+
+<div class="export-buttons">
+  <a href="http://127.0.0.1:8000/api/export/profiles/pdf" target="_blank">Descargar PDF</a>
+  <a href="http://127.0.0.1:8000/api/export/profiles/excel" target="_blank">Descargar Excel</a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Nombre</th>
+      <th>Fecha de Creación</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let profile of profiles">
+      <td>{{ profile.code }}</td>
+      <td>{{ profile.name }}</td>
+      <td>{{ profile.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+      <td>
+        <button (click)="editProfile(profile)">Editar</button>
+        <button (click)="deleteProfile(profile.id)">Eliminar</button>
+        <button (click)="viewDetail(profile)">Detalle</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal de detalle -->
+<div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Detalle del Perfil</h3>
+    <p><strong>Código:</strong> {{ profileDetail.code }}</p>
+    <p><strong>Nombre:</strong> {{ profileDetail.name }}</p>
+    <p><strong>Fecha de creación:</strong> {{ profileDetail.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+    <p><strong>Secciones:</strong></p>
+    <ul>
+      <li *ngFor="let section of profileDetail.sections">{{ section }}</li>
+    </ul>
+    <button (click)="closeModal()">Cerrar</button>
+  </div>
+</div>

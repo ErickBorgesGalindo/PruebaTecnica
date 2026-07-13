@@ -1,0 +1,55 @@
+<h2>Bitácora de Cambios</h2>
+
+<div class="filters">
+  <label>Entidad:</label>
+  <select [(ngModel)]="entityType" (change)="loadLogs()">
+    <option value="">Todas</option>
+    <option value="product">Productos</option>
+    <option value="user">Usuarios</option>
+    <option value="profile">Perfiles</option>
+  </select>
+
+  <label>Acción:</label>
+  <select [(ngModel)]="action" (change)="loadLogs()">
+    <option value="">Todas</option>
+    <option value="created">Creación</option>
+    <option value="updated">Edición</option>
+    <option value="deleted">Eliminación</option>
+  </select>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Usuario</th>
+      <th>Entidad</th>
+      <th>Acción</th>
+      <th>Detalle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let log of logs">
+      <td>{{ log.created_at | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+      <td>{{ log.user_name }}</td>
+      <td>{{ getEntityLabel(log.entity_type) }}</td>
+      <td>{{ getActionLabel(log.action) }}</td>
+      <td class="detail-cell">
+        <div *ngIf="log.action === 'created'">
+          <strong>Creado:</strong><br>
+          <pre>{{ formatData(log.new_data) }}</pre>
+        </div>
+        <div *ngIf="log.action === 'updated'">
+          <strong>Antes:</strong><br>
+          <pre>{{ formatData(log.old_data) }}</pre>
+          <strong>Después:</strong><br>
+          <pre>{{ formatData(log.new_data) }}</pre>
+        </div>
+        <div *ngIf="log.action === 'deleted'">
+          <strong>Eliminado:</strong><br>
+          <pre>{{ formatData(log.old_data) }}</pre>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,23 @@
+<div class="form-container">
+  <h2>{{ isEditing ? 'Editar Perfil' : 'Nuevo Perfil' }}</h2>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label>Nombre:</label>
+      <input type="text" [(ngModel)]="name" name="name" required>
+    </div>
+    <div>
+      <label>Secciones:</label>
+      <div *ngFor="let section of availableSections">
+        <label>
+          <input type="checkbox" [checked]="sections.includes(section)" (change)="toggleSection(section)">
+          {{ section }}
+        </label>
+      </div>
+    </div>
+    <button type="submit">{{ isEditing ? 'Actualizar' : 'Guardar' }}</button>
+    <button type="button" *ngIf="isEditing" (click)="resetForm(); profileCreated.emit();">Cancelar</button>
+  </form>
+</div>
