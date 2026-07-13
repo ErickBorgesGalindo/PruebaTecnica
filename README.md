@@ -2,8 +2,8 @@
 
 Examen de Admision - Area de Desarrollo
 
-**Fecha:** 12 de Marzo del 2025
-**Candidato:** Alejandro Cruz
+**Fecha:** 13 de Julio del 2025
+**Candidato:** Erick Borges
 **Ubicacion:** Manzanillo, Colima
 
 ---
