@@ -116,11 +116,8 @@ return [
 
         'mongodb' => [
             'driver'   => 'mongodb',
-            'host'     => env('MONGODB_HOST', '127.0.0.1'),
-            'port'     => env('MONGODB_PORT', 27017),
+            'uri'      => env('MONGODB_URI'),
             'database' => env('MONGODB_DATABASE', 'tap_terminal'),
-            'username' => env('MONGODB_USERNAME', ''),
-            'password' => env('MONGODB_PASSWORD', ''),
         ],
 
     ],
