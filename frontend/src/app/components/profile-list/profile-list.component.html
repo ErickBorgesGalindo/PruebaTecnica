@@ -6,8 +6,8 @@
 ></app-profile-form>
 
 <div class="export-buttons">
-  <a href="http://127.0.0.1:8000/api/export/profiles/pdf" target="_blank">Descargar PDF</a>
-  <a href="http://127.0.0.1:8000/api/export/profiles/excel" target="_blank">Descargar Excel</a>
+  <a [href]="apiUrl + '/export/profiles/pdf'" target="_blank">Descargar PDF</a>
+  <a [href]="apiUrl + '/export/profiles/excel'" target="_blank">Descargar Excel</a>
 </div>
 
 <table>

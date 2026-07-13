@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-product-list',
@@ -11,6 +12,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent implements OnInit {
+  apiUrl = environment.apiUrl;
   products: any[] = [];
   productToEdit: any = null;
 

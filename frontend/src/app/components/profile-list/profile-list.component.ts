@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../services/profile.service';
 import { ProfileFormComponent } from '../profile-form/profile-form.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile-list',
@@ -11,6 +12,7 @@ import { ProfileFormComponent } from '../profile-form/profile-form.component';
   styleUrl: './profile-list.component.scss'
 })
 export class ProfileListComponent implements OnInit {
+  apiUrl = environment.apiUrl;
   profiles: any[] = [];
   profileToEdit: any = null;
   profileDetail: any = null;

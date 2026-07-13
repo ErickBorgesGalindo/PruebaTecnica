@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { UserFormComponent } from '../user-form/user-form.component';
 import { UserDetailComponent } from '../user-detail/user-detail.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-user-list',
@@ -12,6 +13,7 @@ import { UserDetailComponent } from '../user-detail/user-detail.component';
   styleUrl: './user-list.component.scss'
 })
 export class UserListComponent implements OnInit {
+  apiUrl = environment.apiUrl;
   users: any[] = [];
   userToEdit: any = null;
   userDetail: any = null;

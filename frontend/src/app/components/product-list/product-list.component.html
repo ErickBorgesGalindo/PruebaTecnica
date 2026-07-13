@@ -6,8 +6,8 @@
 ></app-product-form>
 
 <div class="export-buttons">
-  <a href="http://127.0.0.1:8000/api/export/products/pdf" target="_blank">Descargar PDF</a>
-  <a href="http://127.0.0.1:8000/api/export/products/excel" target="_blank">Descargar Excel</a>
+  <a [href]="apiUrl + '/export/products/pdf'" target="_blank">Descargar PDF</a>
+  <a [href]="apiUrl + '/export/products/excel'" target="_blank">Descargar Excel</a>
 </div>
 
 <table>
