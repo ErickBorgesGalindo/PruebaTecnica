@@ -36,8 +36,7 @@ RUN composer dump-autoload --optimize --no-dev
 
 EXPOSE 8000
 
-CMD printf "APP_ENV=production\nDB_CONNECTION=mongodb\nCACHE_STORE=array\nSESSION_DRIVER=array\nQUEUE_CONNECTION=sync\n" > .env \
-    && php artisan key:generate --force \
+CMD printf "APP_KEY=${APP_KEY:-}\nAPP_ENV=production\nAPP_DEBUG=true\nDB_CONNECTION=mongodb\nMONGODB_URI=${MONGODB_URI:-}\nMONGODB_DATABASE=${MONGODB_DATABASE:-prueba_tecnica}\nJWT_SECRET=${JWT_SECRET:-}\nCACHE_STORE=array\nSESSION_DRIVER=array\nQUEUE_CONNECTION=sync\n" > .env \
     && php artisan config:clear \
     && php artisan route:clear \
     && php artisan serve --host=0.0.0.0 --port=$PORT
