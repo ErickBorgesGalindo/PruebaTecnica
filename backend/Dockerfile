@@ -26,7 +26,7 @@ WORKDIR /var/www/html
 
 COPY composer.json composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --ignore-platform-req=ext-mongodb
+RUN composer install --no-dev --no-scripts --prefer-dist --ignore-platform-req=ext-mongodb
 
 COPY . .
 
